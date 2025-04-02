@@ -1,11 +1,14 @@
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { generateRandomTimeSeries, calculateHurstExponent } from '@/lib/fractalAnalysis';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from 'recharts';
 import { Badge } from '@/components/ui/badge';
 import { Info } from 'lucide-react';
+import VolatilityAnalysis from './VolatilityAnalysis';
+import HurstAnalysis from './HurstAnalysis';
+import { useAsset } from '@/contexts/AssetContext';
 
 interface DataPoint {
   time: number;
@@ -14,6 +17,7 @@ interface DataPoint {
 }
 
 const FractalChart = () => {
+  const { selectedAsset, currentAssetData } = useAsset();
   const [data, setData] = useState<DataPoint[]>([]);
   const [hurstExponent, setHurstExponent] = useState(0);
   const [hurstInterpretation, setHurstInterpretation] = useState('');
@@ -21,7 +25,10 @@ const FractalChart = () => {
   
   useEffect(() => {
     // Generate realistic-looking market data with fractal properties
-    const newData = generateRandomTimeSeries(200, 0.7, 100);
+    const hurstValue = selectedAsset === 'VIX' ? 0.3 : 
+                       selectedAsset === 'GLD' ? 0.6 : 0.7;
+    
+    const newData = generateRandomTimeSeries(200, hurstValue, 100);
     const formattedData = newData.map((value, index) => ({
       time: index,
       price: value,
@@ -45,7 +52,7 @@ const FractalChart = () => {
       setHurstInterpretation('Random Walk (Brownian motion)');
       setRiskLevel('medium');
     }
-  }, []);
+  }, [selectedAsset]); // Re-run when asset changes
   
   const getRiskColor = () => {
     switch (riskLevel) {
@@ -61,7 +68,7 @@ const FractalChart = () => {
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle>S&P 500 Fractal Analysis</CardTitle>
+            <CardTitle>{currentAssetData?.name || 'S&P 500'} Fractal Analysis</CardTitle>
             <CardDescription>Time series with fractal properties</CardDescription>
           </div>
           <div className="flex items-center gap-2">
@@ -122,15 +129,11 @@ const FractalChart = () => {
           </TabsContent>
           
           <TabsContent value="volatility" className="h-[350px]">
-            <div className="flex h-full items-center justify-center text-muted-foreground">
-              Volatility analysis will be implemented in the next update
-            </div>
+            <VolatilityAnalysis />
           </TabsContent>
           
           <TabsContent value="hurst" className="h-[350px]">
-            <div className="flex h-full items-center justify-center text-muted-foreground">
-              Detailed Hurst exponent analysis will be implemented in the next update
-            </div>
+            <HurstAnalysis />
           </TabsContent>
         </Tabs>
       </CardContent>

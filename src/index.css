@@ -34,6 +34,16 @@
     --ring: 224 76% 48%;
 
     --radius: 0.5rem;
+    
+    /* Fractal Specific Colors */
+    --fractal-dark-blue: 222 47% 11%;
+    --fractal-blue: 217 33% 17%;
+    --fractal-teal: 196 100% 47%;
+    --fractal-purple: 265 85% 63%;
+    --fractal-pink: 328 85% 63%;
+    --fractal-success: 142 76% 48%;
+    --fractal-warning: 38 92% 50%;
+    --fractal-danger: 358 84% 60%;
   }
 }
 

@@ -55,7 +55,7 @@ const MfDfaAnalysis = () => {
                     border: '1px solid #2C4870',
                     borderRadius: '6px'
                   }}
-                  formatter={(value, name) => [value.toFixed(2), name]}
+                  formatter={(value: number | string) => [typeof value === 'number' ? value.toFixed(2) : value, 'Value']}
                   labelFormatter={(value) => `h = ${value}`}
                 />
                 <Area 

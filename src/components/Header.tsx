@@ -1,7 +1,8 @@
 
 import React from 'react';
-import { Activity, BarChart4, AlertTriangle } from 'lucide-react';
+import { Activity, AlertTriangle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import AssetSelector from './AssetSelector';
 
 const Header = () => {
   return (
@@ -28,10 +29,7 @@ const Header = () => {
             </span>
           </div>
           
-          <div className="flex items-center gap-1.5">
-            <BarChart4 className="h-5 w-5 text-muted-foreground" />
-            <span className="text-sm">S&P 500: <span className="text-fractal-danger">-2.3%</span></span>
-          </div>
+          <AssetSelector />
         </div>
       </div>
     </header>
